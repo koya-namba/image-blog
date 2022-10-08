@@ -1,0 +1,24 @@
+<?php
+
+use Illuminate\Database\Seeder;
+
+class TacticalBoardSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     */
+    public function run()
+    {
+        DB::table('tactical_boards')->insert([
+            'title' => 'Sample1',
+            'body' => 'This is sample. This is sample. This is sample. This is sample. ',
+        ]);
+        
+        DB::table('tactical_boards')->insert([
+            'title' => 'Sample2',
+            'body' => 'this is test. this is test. this is test. this is test. ',
+        ]);
+    }
+}

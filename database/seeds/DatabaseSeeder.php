@@ -15,6 +15,8 @@ class DatabaseSeeder extends Seeder
             PostsTableSeeder::class,
             ItemsTableSeeder::class,
             ItemPhotosTableSeeder::class,
+            TacticalBoardSeeder::class,
+            TacticalBoardPhotoSeeder::class,
             ]);
     }
 }

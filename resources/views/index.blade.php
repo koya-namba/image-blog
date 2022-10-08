@@ -11,5 +11,7 @@
         <a href='/posts'>posts</a><br />
         <h2>写真複数枚</h2>
         <a href='/item'>item</a><br />
+        <h2>手書きJS</h2>
+        <a href='/tactical'>TacticalBoard</a><br />
     </body>
 </html>
