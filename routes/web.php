@@ -26,3 +26,8 @@ Route::post('/posts', 'PostController@store');
 Route::get('/item', 'ItemController@index');
 Route::get('/item/create', 'ItemController@create');
 Route::post('/item', 'ItemController@store');
+
+Route::get('/tactical', 'TacticalBoardController@index');
+Route::get('/tactical/create', 'TacticalBoardController@create');
+Route::get('/tactical/{tactical_board}', 'TacticalBoardController@show');
+Route::post('/tactical', 'TacticalBoardController@store');

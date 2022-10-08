@@ -16,7 +16,7 @@
                     <h2 class='title'>{{ $item->name }}</h2>
                     <!--複数枚の写真を1つずつ表示-->
                     @foreach ($item->photos as $photo)
-                        <p>{{ $photo->path }}</p><br />
+                        <p>{{ $photo->path }}</p>
                         <img class='image' width="200" height="200" src="{{ $photo->path }}">
                     @endforeach
                 </div>
