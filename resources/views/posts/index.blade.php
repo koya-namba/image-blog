@@ -10,15 +10,17 @@
         [<a href='/posts/create'>create</a>]<br />
         <a href='/'>indexに戻る</a><br />
         <div class='posts'>
+        @foreach ($posts as $post)
             <div class='post'>
-            @foreach ($posts as $post)
-                <div class='post'>
-                    <h2 class='title'>{{ $post->title }}</h2>
-                    <p>{{ $post->image_path }}</p>
-                    <img class='image' width="300" height="200" src="{{ $post->image_path }}">
-                </div>
-            @endforeach
+                <!--タイトルを表示する-->
+                <h2 class='title'>{{ $post->title }}</h2>
+                <!--image_pathをpタグで表示-->
+                <p>{{ $post->image_path }}</p>
+                <!--画像を表示するためには，imgタグを用いる-->
+                <!--imgタグのsrcにパスを設定する！-->
+                <img class='image' width="300" height="200" src="{{ $post->image_path }}">
             </div>
+        @endforeach
         </div>
     </body>
 </html>
