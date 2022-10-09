@@ -10,6 +10,7 @@ class ItemPhoto extends Model
     
     public function item()
     {
+        // ItemPhotoは一つのItemに所属
         return $this->belongsTo('App\Item');
     }
 }
