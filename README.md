@@ -157,3 +157,67 @@ itemとitem_photosを持っていきましょう!
 ---
 
 ### おまけ 自分で画像を作成する
+
+photoの関係やコードは重なるため，ポイントの箇所だけ説明する．
+
+#### コードだけ確認したい場合，
+
+- app/TacticalBoard.php
+- app/TacticalBoardPhoto.php
+- app/Http/Controllers/TacticalBoardController.php
+- database/migrations/2022_10_08_171208_create_tactical_boards_table
+- database/migrations/2022_10_08_171228_create_tactical_board_photos_table
+- resouces/views/tactical/index.blade.php
+- resouces/views/tactical/create.blade.php
+- resouces/views/tactical/show.blade.php
+- routes/web.php
+
+JS
+- resources/js/tactical.js
+- webpack.mix.js
+
+CSS
+- public/css/canvas.css
+
+#### ちょっと注意
+
+jsを書く前に，
+
+```bash
+npm install
+```
+
+を実行します！これで，JSを書く準備OKです！  
+resources/js/hoge.jsを作成して，JSを書いていきましょう！  
+htmlで読み込む場合には，
+
+```php
+<script src="{{ mix('js/hoge.js') }}"></script>
+```
+
+そして，webpack.mix.jsも編集します！
+
+```php
+.js('resources/js/hoge.js', 'public/js')
+```
+
+を追加してください！  
+最後にJSファイルを編集した場合には，必ず
+
+```bash
+npm run dev
+```
+
+を実行しましょう！以上！
+
+cssは
+
+```bash
+npm install
+npm run dev
+```
+
+を実行するとpublic/cssフォルダが作成されます！  
+ここにcssファイルを作成しましょう！
+
+これで全部の説明終了です！
