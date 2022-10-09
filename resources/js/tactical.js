@@ -1,165 +1,190 @@
-const changeRed = document.getElementById('changeRed');
-const changeBlue = document.getElementById('changeBlue');
-const changeBlack = document.getElementById('changeBlack');
+// (5 + canvas.getBoundingClientRect().left)
+// canvas.getBoundingClientRect().top;
+
+
+// htmlのidから読み込み
+const canvas = document.getElementById('canvassample');
+const ctx = canvas.getContext('2d');
+
+const changeRedBtn = document.getElementById('changeRedBtn');
+const changeBlueBtn = document.getElementById('changeBlueBtn');
+const changeBlackBtn = document.getElementById('changeBlackBtn');
 
 const resetBtn = document.getElementById('resetBtn');
-const prevBtn = document.getElementById('prevBtn');
+const backBtn = document.getElementById('backBtn');
 const nextBtn = document.getElementById('nextBtn');
 
-const changeImg = document.getElementById('changeImg')
+const changeImgBtn = document.getElementById('changeImgBtn');
 
+const img = document.getElementById("newImg");
+const downloadLink = document.getElementById('download');
 
-let canvas = document.getElementById('canvassample'),
-    ctx = canvas.getContext('2d'),
-    moveflg = 0,
-    Xpoint,
-    Ypoint;
- 
-//初期値（サイズ、色、アルファ値）の決定
-let defSize = 3;
-let defColor = "#000";
-
-let temp;
-
-changeRed.addEventListener('click', () => {
-    defSize = 3
-    defColor = '#F00';
-});
-
-changeBlue.addEventListener('click', () => {
-    defSize = 3
-    defColor = '#00F';
-});
-
-changeBlack.addEventListener('click', () => {
-    defSize = 3
-    defColor = '#000';
-});
-
-
+// canvasを用いて，コートを初期化
 function init() {
     // 白で塗りつぶす
     ctx.fillStyle = "white";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
+    // コートの線
     ctx.strokeStyle = '#808080';
     ctx.lineWidth = 3;
 
-    let drawLeftLine = function() {
+    // 即時実行関数を使う
+    // コート左側のline
+    (function () {
         ctx.beginPath();
         ctx.moveTo(10, 10);
         ctx.lineTo(10, canvas.height-10);
         ctx.closePath();
         ctx.stroke();
-    }
+    }());
 
-    let drawRightLine = function() {
+    // コート右側のline
+    (function () {
         ctx.beginPath();
         ctx.moveTo(canvas.width-10, 10);
         ctx.lineTo(canvas.width-10, canvas.height-10);
         ctx.closePath();
         ctx.stroke();
-    }
-
-    let drawTopLine = function() {
+    }());
+    
+    // コート上のline
+    (function() {
         ctx.beginPath();
         ctx.moveTo(10, canvas.height-10);
         ctx.lineTo(canvas.width-10, canvas.height-10);
         ctx.closePath();
         ctx.stroke();
-    }
+    }());
 
-    let drawBottomLine = function() {
+    // コート下のline
+    (function() {
         ctx.beginPath();
         ctx.moveTo(10, 10);
         ctx.lineTo(canvas.width-10, 10);
         ctx.closePath();
         ctx.stroke();
-    }
+    }());
 
-    let drawCenterLine = function() {
+    // コート中央のline
+    (function() {
         ctx.beginPath();
         ctx.moveTo(canvas.width/2, 10);
         ctx.lineTo(canvas.width/2, canvas.height-10);
         ctx.closePath();
         ctx.stroke();
-    }
+    }());
 
-    let drawCenterCircle = function() {
+    // コート中央の円
+    (function() {
         ctx.beginPath();
         ctx.arc(canvas.width/2, canvas.height/2, 100, 0, Math.PI*2, true);
         ctx.stroke();
-    }
+    }());
 
-    let drawLeftTopLine = function() {
+    // 左コート上部のゴールライン
+    (function() {
         ctx.beginPath();
         ctx.moveTo(10, canvas.height/2 + 100);
         ctx.lineTo(100, canvas.height/2 + 100);
         ctx.closePath();
         ctx.stroke();
-    }
+    }());
 
-    let drawLeftBottomLine = function() {
+    // 左コート下部のゴールライン
+    (function() {
         ctx.beginPath();
         ctx.moveTo(10, canvas.height/2 - 100);
         ctx.lineTo(100, canvas.height/2 - 100);
         ctx.closePath();
         ctx.stroke();
-    }
+    }());
 
-    let drawGoalLeftLine = function() {
+    // 左コートのゴールライン
+    (function() {
         ctx.beginPath();
         ctx.moveTo(100, canvas.height/2 - 100);
         ctx.lineTo(100, canvas.height/2 + 100);
         ctx.closePath();
         ctx.stroke();
-    }
+    }());
 
-    let drawRightTopLine = function() {
+    // 右コート上部のゴールライン
+    (function() {
         ctx.beginPath();
         ctx.moveTo(canvas.width-10, canvas.height/2 + 100);
         ctx.lineTo(canvas.width - 100, canvas.height/2 + 100);
         ctx.closePath();
         ctx.stroke();
-    }
+    }());
 
-    let drawRightBottomLine = function() {
+    // 右コート下部のゴールライン
+    (function() {
         ctx.beginPath();
         ctx.moveTo(canvas.width-10, canvas.height/2 - 100);
         ctx.lineTo(canvas.width - 100, canvas.height/2 - 100);
         ctx.closePath();
         ctx.stroke();
-    }
+    }());
 
-    let drawGoalRightLine = function() {
+    // 右コートのゴールライン
+    (function() {
         ctx.beginPath();
         ctx.moveTo(canvas.width - 100, canvas.height/2 - 100);
         ctx.lineTo(canvas.width - 100, canvas.height/2 + 100);
         ctx.closePath();
         ctx.stroke();
-    }
-
-    drawTopLine();
-    drawBottomLine();
-    drawLeftLine();
-    drawRightLine();
-
-    drawCenterLine();
-    drawCenterCircle();
-
-    drawLeftTopLine();
-    drawLeftBottomLine();
-    drawGoalLeftLine();
-    drawRightTopLine();
-    drawRightBottomLine();
-    drawGoalRightLine();
+    }());
 }
 
-init();
+// ローカルストレージを初期化
+function initLocalStorage(){
+    myStorage.setItem("__log", JSON.stringify([]));
+}
+
+// ローカルストレージを準備
+function setLocalStoreage(){
+    let png = canvas.toDataURL();
+    let logs = JSON.parse(myStorage.getItem("__log"));
+    setTimeout(function(){
+        logs.unshift({png:png});
+        myStorage.setItem("__log", JSON.stringify(logs));
+        temp = [];
+    }, 0);
+}
+
+// 変数を定義
+let moveflg = 0;
+let Xpoint;
+let Ypoint;
+let temp;
+let myStorage = localStorage;
+
+// ペンのサイズ定義
+let defSize = 3
+// ペンのカラー定義
+let defColor = "#000";
 
 // ストレージの初期化
-let myStorage = localStorage;
 window.onload = initLocalStorage();
+
+// canvasを初期化
+init();
+
+// ペンの色を赤に変更
+changeRedBtn.addEventListener('click', () => {
+    defColor = '#F00';
+});
+
+// ペンの色を青に変更
+changeBlueBtn.addEventListener('click', () => {
+    defColor = '#00F';
+});
+
+// ペンの色を黒に変更
+changeBlackBtn.addEventListener('click', () => {
+    defColor = '#000';
+});
 
 // PC対応
 canvas.addEventListener('mousedown', startPoint, false);
@@ -170,46 +195,45 @@ canvas.addEventListener('touchstart', startPoint, false);
 canvas.addEventListener('touchmove', movePoint, false);
 canvas.addEventListener('touchend', endPoint, false);
  
+// ペンの描き始め
 function startPoint(e){
-  e.preventDefault();
-  ctx.beginPath();
- 
-  Xpoint = e.layerX - (5 + canvas.getBoundingClientRect().left);
-  Ypoint = e.layerY - canvas.getBoundingClientRect().top;
-   
+    e.preventDefault();
+    ctx.beginPath();
+    // ペンがずれてたらここを修正
+    Xpoint = e.layerX-(5 + canvas.getBoundingClientRect().left);
+    Ypoint = e.layerY-canvas.getBoundingClientRect().top;
   ctx.moveTo(Xpoint, Ypoint);
 }
- 
+
+// ペンの移動
 function movePoint(e){
-  if(e.buttons === 1 || e.witch === 1 || e.type == 'touchmove'){
-    Xpoint = e.layerX - (5 +canvas.getBoundingClientRect().left);
-    Ypoint = e.layerY - canvas.getBoundingClientRect().top;
-    moveflg = 1;
-     
-    ctx.lineTo(Xpoint, Ypoint);
-    ctx.lineCap = "round";
-    ctx.lineWidth = defSize * 2;
-    ctx.strokeStyle = defColor;
-    ctx.stroke();  
-  }
+    if(e.buttons === 1 || e.witch === 1 || e.type == 'touchmove'){
+        Xpoint = e.layerX-(5 + canvas.getBoundingClientRect().left);
+        Ypoint = e.layerY-canvas.getBoundingClientRect().top;
+        moveflg = 1;
+        ctx.lineTo(Xpoint, Ypoint);
+        ctx.lineCap = "round";
+        ctx.lineWidth = defSize * 2;
+        ctx.strokeStyle = defColor;
+        ctx.stroke();  
+    }
 }
 
+// ペンは離す時
 function endPoint(e)
 {
     if(moveflg === 0){
-       ctx.lineTo(
-           Xpoint-1 - (5 +canvas.getBoundingClientRect().left), 
-           Ypoint-1 - canvas.getBoundingClientRect().top);
+       ctx.lineTo(Xpoint-(6 + canvas.getBoundingClientRect().left), Ypoint-(1 + canvas.getBoundingClientRect().top));
        ctx.lineCap = "round";
        ctx.lineWidth = defSize * 2;
        ctx.strokeStyle = defColor;
        ctx.stroke();
-        
     }
     moveflg = 0;
     setLocalStoreage();
 }
- 
+
+// canvasに関わるものを初期化
 resetBtn.addEventListener('click', () => {
     if(confirm('Canvasを初期化しますか？'))
     {
@@ -218,61 +242,45 @@ resetBtn.addEventListener('click', () => {
         resetCanvas();
     }
 });
- 
+
+// canvasをきれいにして，img, downloadのソースを削除
 function resetCanvas() {
     ctx.clearRect(0, 0, ctx.canvas.clientWidth, ctx.canvas.clientHeight);
-    init();
-    const img = document.getElementById("newImg");
-    const downloadLink = document.getElementById('download');
+    init();    
     img.src=null;
     img.removeAttribute('src');
     downloadLink.removeAttribute('href')
     downloadLink.removeAttribute('download')
 }
 
-changeImg.addEventListener('click', () => {
+// canvasに書いてあるものを画像データに変換し，img, downloadにソースを載せる
+changeImgBtn.addEventListener('click', () => {
     let png = canvas.toDataURL();
-    document.getElementById("newImg").src = png;
-    const downloadLink = document.getElementById('download');
+    img.src = png;
     downloadLink.href = png;
     downloadLink.download = 'test.png';
 });
 
-function initLocalStorage(){
-    myStorage.setItem("__log", JSON.stringify([]));
-}
-
-function setLocalStoreage(){
-    let png = canvas.toDataURL();
-    let logs = JSON.parse(myStorage.getItem("__log"));
- 
-    setTimeout(function(){
-        logs.unshift({png:png});
-        myStorage.setItem("__log", JSON.stringify(logs));
-        temp = [];
-    }, 0);
-}
-
-prevBtn.addEventListener('click', () => {
-    var logs = JSON.parse(myStorage.getItem("__log"));
- 
+// 戻るボタンの関数
+backBtn.addEventListener("click", () => {
+    let logs = JSON.parse(myStorage.getItem("__log")); 
     if(logs.length > 0){
         temp.unshift(logs.shift());
- 
+    
         setTimeout(function(){
             myStorage.setItem("__log", JSON.stringify(logs));
             resetCanvas();
             draw(logs[0]['png']);
         }, 0);
     }
-});
- 
+})
+
+// 進むボタンの関数
 nextBtn.addEventListener('click', () => {
-    var logs = JSON.parse(myStorage.getItem("__log"));
- 
+    let logs = JSON.parse(myStorage.getItem("__log"));
     if(temp.length > 0){
         logs.unshift(temp.shift());
- 
+    
         setTimeout(function(){
             myStorage.setItem("__log", JSON.stringify(logs));
             resetCanvas();
@@ -280,11 +288,11 @@ nextBtn.addEventListener('click', () => {
         }, 0);
     }
 });
- 
+
+// prev, nextボタンの時に用いる関数
 function draw(src) {
     let img = new Image();
-    img.src = src;
- 
+    img.src = src; 
     img.onload = function() {
         ctx.drawImage(img, 0, 0);
     }
