@@ -28,6 +28,7 @@ postsを例に使っていく．
 #### 説明
 
 まずはER図を確認！  
+![posts-ER図](https://user-images.githubusercontent.com/82089820/194734336-c1adef6c-757a-4f7b-aadd-56b43413847d.png)  
 今回は簡単のため，'title'と'image_path'の2つを登録．  
 'title'はその名の通りタイトル！  
 'image_path'はS3でファイルを保存していて，そこへのpathを保存しましょう！  
@@ -35,6 +36,9 @@ pathを保存するので，string扱いになります！
 
 次にcreate.blade.phpのformの中身を確認！  
 inputタグのtypeに注意をしてください！
+```php
+<input type="file" name="image">
+```
 
 そして，PostControllerのstoreメソッドを見ていきやしょう！  
 まず，$postにタイトルを設定します！
