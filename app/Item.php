@@ -10,6 +10,7 @@ class Item extends Model
     
     public function photos()
     {
+        // Itemはたくさんの写真を持つ
         return $this->hasMany('App\ItemPhoto');
     }
 }

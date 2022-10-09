@@ -10,7 +10,6 @@
         [<a href='/item/create'>create</a>]<br />
         <a href='/'>indexに戻る</a><br />
         <div class='posts'>
-            <div class='post'>
             @foreach ($items as $item)
                 <div class='post'>
                     <h2 class='title'>{{ $item->name }}</h2>
@@ -21,7 +20,6 @@
                     @endforeach
                 </div>
             @endforeach
-            </div>
         </div>
     </body>
 </html>
