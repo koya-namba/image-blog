@@ -30,5 +30,15 @@ class TacticalBoardPhotoSeeder extends Seeder
             'tactical_board_id' => 2,
             'path' => 'https://lev-backet.s3.ap-northeast-1.amazonaws.com/myprefix/rW1HuYDliMGFg55mMiMH02inL0jG8uCRW849sQfj.png',
         ]);
+        
+        DB::table('tactical_board_photos')->insert([
+            'tactical_board_id' => 3,
+            'path' => 'https://lev-backet.s3.ap-northeast-1.amazonaws.com/myprefix/HuNk45SxAPQo6aKO1WaDBkew25GSQZd3TGW3RSXi.png',
+        ]);
+        
+        DB::table('tactical_board_photos')->insert([
+            'tactical_board_id' => 3,
+            'path' => 'https://lev-backet.s3.ap-northeast-1.amazonaws.com/myprefix/A4KkhnKZW4HQCD9dN6e5mVEVOeSomGiTXZRb3At5.png',
+        ]);
     }
 }
