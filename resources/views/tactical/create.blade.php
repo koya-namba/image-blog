@@ -9,24 +9,38 @@
     </head>
     <body>
         <h1>TacticalBoard作成</h1>
-        <canvas id="canvassample" width="800" height="560"></canvas>
+        <!-- canvasを用意 -->
+        <canvas id="canvassample" width="1014" height="650"></canvas>
+        <!-- モードを選択 -->
         <div style="padding:10px">
+            <p>現在は<span id="tool">ペン</span>モードです</p>
+            <button type="button" id="changeToolBtn">スタンプに変更</button>
+        </div>
+        <!-- 色を選択 -->
+        <div style="padding:10px">
+            <p>現在のカラーは<span id="color">黒</span>色です</p>
             <button type="button" id="changeRedBtn">RED</button>
             <button type="button" id="changeBlueBtn">BLUE</button>
             <button type="button" id="changeBlackBtn">BLACK</button>
         </div>
+        <!-- リセット，戻る，進むボタンを設置 -->
         <div style="padding:10px">
             <button type="button" id="resetBtn">リセット</button>
             <button type="button" id="backBtn">戻る</button>
             <button type="button" id="nextBtn">進む</button>
         </div>
+        <!-- canvasを画像に変換 -->
         <div style="padding:10px">
             <button type="button" id="changeImgBtn" value="1">画像変換</button>
         </div>
         <h2>画像出力<h2> 
-        <div id="img-box"><img id="newImg"></div>
+        <!-- 画像を表示するimgタグ -->
+        <div id="img-box">
+            <img id="newImg">
+        </div>
+        <!-- ダウンロードをするためのaタグ -->
         <a id="download">Download</a>
-        
+        <!--以下はフォーム-->
         <h2>以下はフォーム</h2>
         <form action="/tactical" method="post" enctype="multipart/form-data">
             {{ csrf_field() }}
