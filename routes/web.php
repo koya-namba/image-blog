@@ -22,6 +22,7 @@ Route::get('/', function () {
 Route::get('/posts', 'PostController@index');
 Route::get('/posts/create', 'PostController@create');
 Route::post('/posts', 'PostController@store');
+Route::post('/tweet', 'PostController@create_tweet');
 
 Route::get('/item', 'ItemController@index');
 Route::get('/item/create', 'ItemController@create');
