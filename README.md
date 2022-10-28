@@ -9,7 +9,9 @@ S3とはファイルを保存しておける場所で，この場所へのpath�
 1. 画像を1枚ずつ保存する方法->postsを用いる．  
 2. 画像を複数枚保存する方法->itemを用いる．  
 
-おまけ 自分で画像を作成し，保存する．
+おまけ 
+1. 自分で画像を作成し，保存する．
+2. twitterにS3画像を投稿する．
 
 
 ## 参考
@@ -21,6 +23,10 @@ S3とはファイルを保存しておける場所で，この場所へのpath�
 - [Laravel で JavaScriptをやるときの手法](https://qiita.com/ntm718/items/fed0e1060557a4e28ef3)
 - [Laravel日記2 - CSSを適用してみる-](https://qiita.com/kotsuban-teikin/items/9b00d0faa0b7eaf70796)
 - [Laravelのアセットに関するTips](https://qiita.com/sakuraya/items/411dbc2e1e633928340e)
+- [Twitter API Elevated(高度なアクセス)の利用申請をしてみる！](https://tensei-shinai.com/2022/04/27/twitter-api-elevated/)
+- [LaravelでTwitterの投稿を実装する](https://qiita.com/tiwu_dev/items/0fdb193a44b6eeb937fa)
+- [PHPでTwitterに画像を投稿する処理を書く際のハマリどころまとめ](https://qiita.com/zaramme/items/0f362d03c7961b4ef24d)
+- [Amazon S3に置いた画像ファイルがTwitter, Facebook, Chatwork, Slack, Discordでどう展開されるか試してみた](https://dev.classmethod.jp/articles/s3-image-how-looking-in-services/)
 
 
 ## 実践
@@ -167,7 +173,7 @@ itemとitem_photosを持っていきましょう!
 
 ---
 
-### おまけ 自分で画像を作成する
+### おまけ1 自分で画像を作成する
 
 photoの関係やコードは重なるため，ポイントの箇所だけ説明する．
 
@@ -237,6 +243,113 @@ cssを読み込むには，
 ```
 
 としましょう！
+
+### おまけ2 twitterにS3画像を投稿する．
+
+twitterに画像を投稿するところメイン！
+
+#### コードだけ確認したい場合，
+
+- app/Tweet.php
+- app/Http/Controllers/TweetController.php
+- database/migrations/2022_10_28_082350_create_tweets_table.php
+- resouces/views/tweets/index.blade.php
+- resouces/views/tweets/create.blade.php
+- config/services.php
+- routes/web.php
+
+#### 先に結論！
+
+S3の画像のURLを記述しただけでは，twitterに画像の投稿はできないみたい！  
+[Amazon S3に置いた画像ファイルがTwitter, Facebook, Chatwork, Slack, Discordでどう展開されるか試してみた](https://dev.classmethod.jp/articles/s3-image-how-looking-in-services/)  
+なので，OGPを用いてhtmlをtwitterに投稿する．(この時に画像を大きくする)
+
+#### 注意点
+
+TweetControllerのstore_tweet関数だけが主に違います！
+
+```php
+// フォームから送信された値をそれぞれ変数に代入
+$content = $request['content'];
+$image = $request->file('image');
+$tmp_path = Storage::disk('s3')->putFile('myprefix', $image, 'public');
+$image_path = Storage::disk('s3')->url($tmp_path);
+        
+// DBに登録(tweetsテーブルに値を保存)
+$tweet->content = $content;
+$tweet->image_path = $image_path;
+```
+上記の記述はcreate.blade.phpのフォームから送信された値をDBに保存しています．  
+次はtwitterへの投稿のための実装．  
+```php
+$connection = new TwitterOAuth(
+    config('services.twitter.consumer_key'),
+    config('services.twitter.consumer_secret'),
+    config('services.twitter.access_token'),
+    config('services.twitter.access_token_secret'),
+);
+```
+twitterと接続するための設定．  
+.envから直接呼び出すより，configから呼び出した方が良い！  
+.env->configとした方がパフォーマンスが上がる！  
+```bash
+php artisan cache:clear
+php artisan config:clear
+```
+.env，configを変更したときは上記のコマンドを実行．
+
+```php
+$username = config('services.twitter.username');
+```
+OGPにTwitterのユーザ名を載せる必要があるため，configから取り出してる．  
+直接htmlに記述しても問題はないはず．
+
+```php
+// twitterにs3の画像を投稿するため，htmlを作成(twittercard)
+// htmlファイルを作成
+$htmlfile = 'tmp.html';
+// htmlファイルの中身を作成
+$filecontents = 
+'
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns#">
+    <head>
+        <meta name="twitter:title" content="New tweets" />
+        <meta name="twitter:description" content="' . $content . '" />
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:site" content="' . $username . '" />
+        <meta name="twitter:creator" content="' . $username . '">
+        <meta name="twitter:image" content="' . $image_path . '" />
+    </head>
+    <body>
+        <h1>Page Not Display</h1>
+    </body>
+</html>
+';
+// htmlファイルにhtmlの中身を記述
+file_put_contents($htmlfile, $filecontents);
+
+// 上記で作成したhtmlファイルをs3にアップロードして，pathを取得
+// htmlをバケットの'myprefix'フォルダへアップロード
+$html_tmp_path = Storage::disk('s3')->putFile('myprefix', $htmlfile, 'public');
+// アップロードした画像のフルパスを取得
+$html_path = Storage::disk('s3')->url($html_tmp_path);
+// htmlファイルの中身を空にする
+file_put_contents($htmlfile, '');
+```
+今回の実装の最大のポイント！  
+OGPを投稿するためにhtmlを作成して，S3にhtmlファイルを保存．  
+
+```php
+// tweetの中身をフォーマットを作成
+// statusには投稿する中身を載せる．
+$tweet = [
+    'status' => $content . PHP_EOL. $html_path,
+];
+// tweetする
+$res = $connection->post('statuses/update', $tweet);
+```
+あとはツイートするだけ！
 
 これで全部の説明終了です！
 
