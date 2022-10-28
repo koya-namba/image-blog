@@ -13,5 +13,7 @@
         <a href='/item'>item</a><br />
         <h2>手書きJS</h2>
         <a href='/tactical'>TacticalBoard</a><br />
+        <h2>Tweetする</h2>
+        <a href='/tweets'>Tweets</a><br />
     </body>
 </html>
