@@ -18,10 +18,11 @@
                             {{ $tactical_board->title }}
                         </a>
                     </h2>
-                    <!--1枚目の写真だけ表示する-->
-                    @if($tactical_board->photos->has("1"))
-                        <p>{{ $tactical_board->photos[1]->path }}</p><br />
-                        <img class='image' width="400" height="300" src="{{ $tactical_board->photos[1]->path }}">
+                    <!--写真が登録されていないときは表示しない-->
+                    @if($tactical_board->photos->has("0"))
+                        <!--1枚目の写真だけ表示する-->
+                        <p>{{ $tactical_board->photos[0]->path }}</p><br />
+                        <img class='image' width="400" height="300" src="{{ $tactical_board->photos[0]->path }}">
                     @endif
                 </div>
             @endforeach
