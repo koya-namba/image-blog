@@ -19,8 +19,10 @@
                         </a>
                     </h2>
                     <!--1枚目の写真だけ表示する-->
-                    <p>{{ $tactical_board->photos[0]->path }}</p><br />
-                    <img class='image' width="400" height="300" src="{{ $tactical_board->photos[0]->path }}">
+                    @if($tactical_board->photos->has("1"))
+                        <p>{{ $tactical_board->photos[1]->path }}</p><br />
+                        <img class='image' width="400" height="300" src="{{ $tactical_board->photos[1]->path }}">
+                    @endif
                 </div>
             @endforeach
             </div>
