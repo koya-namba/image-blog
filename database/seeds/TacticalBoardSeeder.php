@@ -25,5 +25,10 @@ class TacticalBoardSeeder extends Seeder
             'title' => 'Sample3',
             'body' => 'this is magic. this is magic. this is magic. this is magic. this is magic. ',
         ]);
+        
+        DB::table('tactical_boards')->insert([
+            'title' => 'Sample4',
+            'body' => 'this is magic. this is magic. this is magic. this is magic. this is magic. ',
+        ]);
     }
 }
