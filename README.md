@@ -1,6 +1,6 @@
-# laravel6とS3で画像を扱う
+# laravel9とS3で画像を扱う
 
-このリポジトリではlaravel6とS3で画像を保存したり，表示する方法を記録．  
+このリポジトリではlaravel9(laravel6からupdate)とS3で画像を保存したり，表示する方法を記録．  
 S3とはファイルを保存しておける場所で，この場所へのpathをDBに保存することでファイルを扱える！  
 
 
@@ -378,6 +378,11 @@ AWS_ACCESS_KEY_ID={access_key_id}
 AWS_SECRET_ACCESS_KEY={secret_access_key}
 AWS_DEFAULT_REGION=ap-northeast-1
 AWS_BUCKET={backet_name}
+
+CONSUMER_KEY={consumer_key}
+CONSUMER_SECRET={consumer_secret}
+ACCESS_TOKEN={accses_token}
+ACCESS_TOKEN_SECRET={access_token_secret}
 ```
 
 実行する
