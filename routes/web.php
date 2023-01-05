@@ -1,5 +1,10 @@
 <?php
 
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\ItemController;
+use App\Http\Controllers\TacticalBoardController;
+use App\Http\Controllers\TweetController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -19,19 +24,19 @@ Route::get('/', function () {
     return view('index');
 });
 
-Route::get('/posts', 'PostController@index');
-Route::get('/posts/create', 'PostController@create');
-Route::post('/posts', 'PostController@store');
+Route::get('/posts', [PostController::class, 'index']);
+Route::get('/posts/create', [PostController::class, 'create']);
+Route::post('/posts', [PostController::class, 'store']);
 
-Route::get('/item', 'ItemController@index');
-Route::get('/item/create', 'ItemController@create');
-Route::post('/item', 'ItemController@store');
+Route::get('/item', [ItemController::class, 'index']);
+Route::get('/item/create', [ItemController::class, 'create']);
+Route::post('/item', [ItemController::class, 'store']);
 
-Route::get('/tactical', 'TacticalBoardController@index');
-Route::get('/tactical/create', 'TacticalBoardController@create');
-Route::get('/tactical/{tactical_board}', 'TacticalBoardController@show');
-Route::post('/tactical', 'TacticalBoardController@store');
+Route::get('/tactical', [TacticalBoardController::class, 'index']);
+Route::get('/tactical/create', [TacticalBoardController::class, 'create']);
+Route::get('/tactical/{tactical_board}', [TacticalBoardController::class, 'show']);
+Route::post('/tactical', [TacticalBoardController::class, 'store']);
 
-Route::get('/tweets', 'TweetController@index');
-Route::get('tweets/create', 'TweetController@create');
-Route::post('/tweets', 'TweetController@store_tweet');
+Route::get('/tweets', [TweetController::class, 'index']);
+Route::get('tweets/create', [TweetController::class, 'create']);
+Route::post('/tweets', [TweetController::class, 'store_tweet']);

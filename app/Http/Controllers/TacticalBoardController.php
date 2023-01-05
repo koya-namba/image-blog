@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Storage;
-use App\TacticalBoard;
-use App\TacticalBoardPhoto;
+use App\Models\TacticalBoard;
+use App\Models\TacticalBoardPhoto;
 
 class TacticalBoardController extends Controller
 {

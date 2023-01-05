@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -11,6 +11,6 @@ class ItemPhoto extends Model
     public function item()
     {
         // ItemPhotoは一つのItemに所属
-        return $this->belongsTo('App\Item');
+        return $this->belongsTo(Item::class);
     }
 }

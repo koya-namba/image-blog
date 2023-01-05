@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -11,6 +11,6 @@ class Item extends Model
     public function photos()
     {
         // Itemはたくさんの写真を持つ
-        return $this->hasMany('App\ItemPhoto');
+        return $this->hasMany(ItemPhoto::class);
     }
 }

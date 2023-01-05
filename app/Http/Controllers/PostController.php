@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 // Postモデルを追加
-use App\Post;
+use App\Models\Post;
 // Storageを追加
 use Storage;
 

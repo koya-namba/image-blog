@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -10,6 +10,6 @@ class TacticalBoardPhoto extends Model
     
     public function tactical_board()
     {
-        return $this->belongsTo('App\TacticalBoard');
+        return $this->belongsTo(TacticalBoard::class);
     }
 }

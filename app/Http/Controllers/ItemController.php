@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Storage;
-use App\Item;
-use App\ItemPhoto;
+use App\Models\Item;
+use App\Models\ItemPhoto;
 
 class ItemController extends Controller
 {

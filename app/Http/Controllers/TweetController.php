@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 // Tweetモデルを追加
-use App\Tweet;
+use App\Models\Tweet;
 // Storageを追加
 use Storage;
 // TwitterOAuth

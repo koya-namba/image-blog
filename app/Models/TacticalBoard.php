@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -10,6 +10,6 @@ class TacticalBoard extends Model
     
     public function photos()
     {
-        return $this->hasMany('App\TacticalBoardPhoto');
+        return $this->hasMany(TacticalBoardPhoto::class);
     }
 }
